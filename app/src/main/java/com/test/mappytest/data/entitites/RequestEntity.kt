@@ -9,5 +9,6 @@ class RequestEntity(
     val limit: Int,
     val stringOne: String,
     val stringTwo: String,
-    val occurrence: Int
+    val completed: Int,
+    val hits: Int
 )

@@ -30,26 +30,18 @@ class FizzBuzzViewModel @Inject constructor(
         get() = _processorOutputLiveData
 
     fun process(integerOne: Int, integerTwo: Int, limit: Int, stringOne: String, stingTwo: String) {
-        processOutputDisposable = fizzBuzzProcessor.processOutput(
-            IntegerInput(integerOne, integerTwo, limit),
-            StringInput(stringOne, stingTwo)
-        )
+        val integerInput = IntegerInput(integerOne, integerTwo, limit)
+        val stringInput = StringInput(stringOne, stingTwo)
+        val request = Request(integerInput, stringInput)
+
+        processOutputDisposable = fizzBuzzProcessor.processOutput(integerInput, stringInput)
             .subscribeOn(Schedulers.computation())
             .observeOn(Schedulers.io())
-            .doOnComplete {
-                requestRepository.insert(
-                    Request(
-                        IntegerInput(integerOne, integerTwo, limit),
-                        StringInput(stringOne, stingTwo)
-                    )
-                )
-            }
+            //.doOnSubscribe { requestRepository.insertOrUpdateHits(request) }
+            .doOnComplete { requestRepository.insertOrUpdateCompleted(request) }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                _processorOutputLiveData.value = Pair(it, null)
-            }, {
-                _processorOutputLiveData.value = Pair(null, it)
-            })
+            .subscribe({ _processorOutputLiveData.value = Pair(it, null) },
+                { _processorOutputLiveData.value = Pair(null, it) })
 
         disposables.add(processOutputDisposable!!)
     }

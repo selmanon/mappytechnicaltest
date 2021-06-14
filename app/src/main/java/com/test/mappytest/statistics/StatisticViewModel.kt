@@ -1,20 +1,22 @@
 package com.test.mappytest.statistics
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.test.mappytest.model.IntegerInput
-import com.test.mappytest.model.Request
-import com.test.mappytest.model.StringInput
+import com.test.mappytest.data.entitites.RequestEntity
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
+@HiltViewModel
 class StatisticViewModel @Inject constructor(private val requestRepository: RequestRepository) :
     ViewModel() {
 
-    private var _statistics: MutableLiveData<List<Request>> = MutableLiveData()
-    val statistics: LiveData<List<Request>>
+    private var _statistics: MutableLiveData<RequestEntity> = MutableLiveData()
+    val statistics: LiveData<RequestEntity>
         get() {
             return _statistics
         }
@@ -24,25 +26,20 @@ class StatisticViewModel @Inject constructor(private val requestRepository: Requ
 
     fun showStatistics() {
         compositeDisposable.add(
-            requestRepository.getAll()
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe({ it ->
-                    _statistics.value = it.map {
-                        Request(
-                            IntegerInput(
-                                it.integerOne,
-                                it.integerTwo,
-                                it.limit
-                            ),
-                            StringInput(
-                                it.stringOne,
-                                it.stringTwo
-                            )
-                        )
-                    }
-                }, {
-
-                })
+            requestRepository.mostFrequentRequest()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    _statistics.value = it
+                },
+                    {
+                        Log.e("TAG", it.message.toString())
+                    })
         )
+    }
+
+    override fun onCleared() {
+        compositeDisposable.clear()
+        super.onCleared()
     }
 }

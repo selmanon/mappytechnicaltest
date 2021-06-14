@@ -80,10 +80,10 @@
             android:id="@+id/buttonProcess"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="92dp"
-            android:layout_marginLeft="92dp"
+            android:layout_marginStart="52dp"
+            android:layout_marginLeft="52dp"
             android:layout_marginTop="32dp"
-            android:hint="@string/process_hint"
+            android:text="@string/process_hint"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextStringTwo" />
 
@@ -92,9 +92,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:hint="@string/cancel_process_hint"
+            android:text="@string/cancel_process_hint"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.203"
+            app:layout_constraintStart_toEndOf="@+id/buttonProcess"
+            app:layout_constraintTop_toBottomOf="@+id/editTextStringTwo" />
+
+        <Button
+            android:id="@+id/buttonStatistics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/stats_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.835"
             app:layout_constraintStart_toEndOf="@+id/buttonProcess"
             app:layout_constraintTop_toBottomOf="@+id/editTextStringTwo" />
 

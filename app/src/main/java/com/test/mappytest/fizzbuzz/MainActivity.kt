@@ -1,6 +1,7 @@
 package com.test.mappytest.fizzbuzz
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.test.mappytest.R
 import com.test.mappytest.databinding.ActivityMainBinding
+import com.test.mappytest.statistics.StatisticsActivity
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
@@ -71,6 +73,10 @@ class MainActivity : AppCompatActivity() {
         binding.buttonCancelProcessing.setOnClickListener {
             fizzBuzzViewModel.cancelProcessing()
             binding.textViewResult.text = getString(R.string.result_hint)
+        }
+
+        binding.buttonStatistics.setOnClickListener {
+            startActivity(Intent(this, StatisticsActivity::class.java))
         }
 
         editTextIntegerOneStream =

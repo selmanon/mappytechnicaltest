@@ -1,9 +1,6 @@
 package com.test.mappytest.data
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.test.mappytest.data.entitites.RequestEntity
 import io.reactivex.Single
 
@@ -22,8 +19,8 @@ interface RequestDao {
         stringTwo: String
     ): RequestEntity?
 
-    @Query("UPDATE RequestEntity SET occurrence = occurrence + 1 WHERE integerOne LIKE :integerOne AND integerTwo LIKE :integerTwo AND `limit` LIKE :limit AND stringOne LIKE :stringOne AND stringTwo LIKE :stringTwo")
-    fun updateOccurrence(
+    @Query("UPDATE RequestEntity SET completed = completed + 1 WHERE integerOne LIKE :integerOne AND integerTwo LIKE :integerTwo AND `limit` LIKE :limit AND stringOne LIKE :stringOne AND stringTwo LIKE :stringTwo")
+    fun updateCompleted(
         integerOne: Int,
         integerTwo: Int,
         limit: Int,
@@ -31,7 +28,16 @@ interface RequestDao {
         stringTwo: String
     )
 
-    fun insertOrUpdate(requestEntity: RequestEntity) {
+    @Query("UPDATE RequestEntity SET hits = hits + 1 WHERE integerOne LIKE :integerOne AND integerTwo LIKE :integerTwo AND `limit` LIKE :limit AND stringOne LIKE :stringOne AND stringTwo LIKE :stringTwo")
+    fun updateHits(
+        integerOne: Int,
+        integerTwo: Int,
+        limit: Int,
+        stringOne: String,
+        stringTwo: String
+    )
+
+    fun insertOrUpdateCompleted(requestEntity: RequestEntity) {
         val requestFromDatabase = getRequestByPrimaryKey(
             requestEntity.integerOne,
             requestEntity.integerTwo,
@@ -39,19 +45,42 @@ interface RequestDao {
             requestEntity.stringOne,
             requestEntity.stringTwo
         )
-        if (requestFromDatabase == null)
+        if (requestFromDatabase == null) {
             insert(requestEntity)
-        else
-            updateOccurrence(
+        } else {
+            updateCompleted(
                 requestEntity.integerOne,
                 requestEntity.integerTwo,
                 requestEntity.limit,
                 requestEntity.stringOne,
                 requestEntity.stringTwo
             )
+        }
     }
 
-    @Query("SELECT * FROM RequestEntity")
-    fun getAll(): Single<List<RequestEntity>>
+    fun insertOrUpdateHits(requestEntity: RequestEntity) {
+        val requestFromDatabase = getRequestByPrimaryKey(
+            requestEntity.integerOne,
+            requestEntity.integerTwo,
+            requestEntity.limit,
+            requestEntity.stringOne,
+            requestEntity.stringTwo
+        )
+        if (requestFromDatabase == null) {
+            insert(requestEntity)
+        } else {
+            updateHits(
+                requestEntity.integerOne,
+                requestEntity.integerTwo,
+                requestEntity.limit,
+                requestEntity.stringOne,
+                requestEntity.stringTwo
+            )
+        }
+    }
+
+
+    @Query("SELECT * FROM RequestEntity ORDER BY completed,hits DESC LIMIT 1")
+    fun getMostFrequentRequest(): Single<RequestEntity>
 
 }

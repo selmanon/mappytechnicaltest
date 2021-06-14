@@ -15,19 +15,34 @@ class RequestRepository @Inject constructor(application: Application) {
         requestDao = db.requestDao()
     }
 
-    fun insert(request: Request) {
-        requestDao.insertOrUpdate(
+    fun insertOrUpdateCompleted(request: Request) {
+        requestDao.insertOrUpdateCompleted(
             RequestEntity(
                 integerOne = request.integerInput.integerOne,
                 integerTwo = request.integerInput.integerTwo,
                 limit = request.integerInput.limit,
                 stringOne = request.stringInput.stringOne,
                 stringTwo = request.stringInput.stringTwo,
-                occurrence = 1
+                completed = 1,
+                hits = 1
             )
         )
     }
 
-    fun getAll() = requestDao.getAll()
+    fun insertOrUpdateHits(request: Request) {
+        requestDao.insertOrUpdateHits(
+            RequestEntity(
+                integerOne = request.integerInput.integerOne,
+                integerTwo = request.integerInput.integerTwo,
+                limit = request.integerInput.limit,
+                stringOne = request.stringInput.stringOne,
+                stringTwo = request.stringInput.stringTwo,
+                completed = 1,
+                hits = 1
+            )
+        )
+    }
+
+    fun mostFrequentRequest() = requestDao.getMostFrequentRequest()
 
 }
