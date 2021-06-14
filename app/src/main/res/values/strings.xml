@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">mappytest</string>
+    <string name="invalid_inputs">Invalid input value for limit</string>
+    <string name="processing_label">Processing..</string>
+    <string name="result_hint">Result</string>
+    <string name="process_hint">Process</string>
+    <string name="cancel_process_hint">Cancel</string>
+</resources>
