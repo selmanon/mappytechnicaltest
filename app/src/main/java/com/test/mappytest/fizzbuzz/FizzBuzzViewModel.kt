@@ -21,6 +21,11 @@ class FizzBuzzViewModel @Inject constructor(
     private val requestRepository: RequestRepository
 ) :
     ViewModel() {
+
+    companion object {
+        val TAG: String = FizzBuzzViewModel::class.java.simpleName
+    }
+
     private var disposables: CompositeDisposable = CompositeDisposable()
     private var processOutputDisposable: Disposable? = null
 
@@ -32,7 +37,7 @@ class FizzBuzzViewModel @Inject constructor(
 
     private var _isProcessingCompleted: MutableLiveData<Boolean> =
         MutableLiveData(false)
-    val isProcessingCompleted : LiveData<Boolean>
+    val isProcessingCompleted: LiveData<Boolean>
         get() = _isProcessingCompleted
 
 
@@ -49,7 +54,7 @@ class FizzBuzzViewModel @Inject constructor(
                 .doOnComplete {
                     requestRepository.updateCompleted(request).subscribe()
                     _isProcessingCompleted.postValue(true)
-                    Log.e("TAG", "completed")
+                    Log.i(TAG, "completed")
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ _processorOutputLiveData.value = Pair(it, null) },
@@ -71,9 +76,9 @@ class FizzBuzzViewModel @Inject constructor(
             requestRepository.insertOrUpdateHits(Request(integerInput, stringInput))
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    Log.e("TAG", " insertRequest with success $it")
+                    Log.i(TAG, "insertRequest with success $it")
                 }, {
-                    Log.e("TAG", "error insertRequest" + it.message)
+                    Log.i(TAG, "error insertRequest" + it.message)
                 })
 
         disposables.add(insertDisposable)

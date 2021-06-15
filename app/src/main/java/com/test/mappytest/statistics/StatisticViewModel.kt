@@ -15,6 +15,10 @@ import javax.inject.Inject
 class StatisticViewModel @Inject constructor(private val requestRepository: RequestRepository) :
     ViewModel() {
 
+    companion object {
+        val TAG: String = StatisticViewModel::class.java.simpleName
+    }
+
     private var _statistics: MutableLiveData<RequestEntity> = MutableLiveData()
     val statistics: LiveData<RequestEntity>
         get() {
@@ -33,7 +37,7 @@ class StatisticViewModel @Inject constructor(private val requestRepository: Requ
                     _statistics.value = it
                 },
                     {
-                        Log.e("TAG", it.message.toString())
+                        Log.i(TAG, it.message.toString())
                     })
         )
     }
