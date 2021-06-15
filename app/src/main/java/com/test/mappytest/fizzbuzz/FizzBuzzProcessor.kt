@@ -1,14 +1,14 @@
 package com.test.mappytest.fizzbuzz
 
 import com.test.mappytest.model.IntegersInput
-import com.test.mappytest.model.StringInput
+import com.test.mappytest.model.StringsInput
 import io.reactivex.Observable
 import javax.inject.Inject
 
 
 class FizzBuzzProcessor @Inject constructor() {
 
-    fun processOutput(integerInput: IntegersInput, stringInput: StringInput): Observable<String> {
+    fun processOutput(integerInput: IntegersInput, stringsInput: StringsInput): Observable<String> {
         if (integerInput.integerOne > integerInput.limit || integerInput.integerTwo > integerInput.limit) {
             return Observable.error(InvalidInputException())
         } else {
@@ -19,11 +19,11 @@ class FizzBuzzProcessor @Inject constructor() {
                 .range(1, integerInput.limit)
                 .concatMap { element ->
                     if (element.rem(integerInput.integerOne) == 0 && element.rem(integerInput.integerTwo) == 0) {
-                        output.append(stringInput.stringOne + stringInput.stringTwo)
+                        output.append(stringsInput.stringOne + stringsInput.stringTwo)
                     } else if (element.rem(integerInput.integerOne) == 0) {
-                        output.append(stringInput.stringOne)
+                        output.append(stringsInput.stringOne)
                     } else if (element.rem(integerInput.integerTwo) == 0) {
-                        output.append(stringInput.stringTwo)
+                        output.append(stringsInput.stringTwo)
                     } else {
                         output.append(element.toString())
                     }

@@ -3,7 +3,7 @@ package com.test.mappytest
 import com.test.mappytest.fizzbuzz.FizzBuzzProcessor
 import com.test.mappytest.fizzbuzz.InvalidInputException
 import com.test.mappytest.model.IntegersInput
-import com.test.mappytest.model.StringInput
+import com.test.mappytest.model.StringsInput
 import junit.framework.TestCase
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -20,7 +20,7 @@ class FizzBuzzProcessorTest : TestCase() {
     fun `given all inputs are valid then processOutput success`() {
         // arrange
         val integerInput = IntegersInput(3, 5, 16)
-        val stringInput = StringInput("fizz", "buzz")
+        val stringInput = StringsInput("fizz", "buzz")
         val expectedOutput =
             StringBuilder("1,2,fizz,4,buzz,fizz,7,8,fizz,buzz,11,fizz,13,14,fizzbuzz,16,")
         // act
@@ -34,7 +34,7 @@ class FizzBuzzProcessorTest : TestCase() {
     @Test
     fun `given integer one input are not valid then processOutput throw Exception`() {
         val integerInput = IntegersInput(17, 5, 16)
-        val stringInput = StringInput("fizz", "buzz")
+        val stringInput = StringsInput("fizz", "buzz")
 
 
         val processOutput = fizzBuzzProcessor.processOutput(integerInput, stringInput)

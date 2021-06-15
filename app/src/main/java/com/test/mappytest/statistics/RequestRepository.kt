@@ -23,8 +23,8 @@ class RequestRepository @Inject constructor(application: Application) {
                 integerOne = request.integersInput.integerOne,
                 integerTwo = request.integersInput.integerTwo,
                 limit = request.integersInput.limit,
-                stringOne = request.stringInput.stringOne,
-                stringTwo = request.stringInput.stringTwo,
+                stringOne = request.stringsInput.stringOne,
+                stringTwo = request.stringsInput.stringTwo,
                 completed = 0,
                 hits = 1
             )
@@ -37,8 +37,8 @@ class RequestRepository @Inject constructor(application: Application) {
             integerOne = request.integersInput.integerOne,
             integerTwo = request.integersInput.integerTwo,
             limit = request.integersInput.limit,
-            stringOne = request.stringInput.stringOne,
-            stringTwo = request.stringInput.stringTwo
+            stringOne = request.stringsInput.stringOne,
+            stringTwo = request.stringsInput.stringTwo
         )
 
 
