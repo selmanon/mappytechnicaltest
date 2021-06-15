@@ -18,6 +18,7 @@ class FizzBuzzProcessor @Inject constructor() {
 
             return Observable
                 .range(1, integerInput.limit)
+                .take(10000)
                 .concatMap { element ->
                     if (element.rem(integerInput.integerOne) == 0 && element.rem(integerInput.integerTwo) == 0) {
                         output.append(stingInput)

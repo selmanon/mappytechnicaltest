@@ -57,7 +57,8 @@ class FizzBuzzViewModel @Inject constructor(
                     Log.i(TAG, "completed")
                 }
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ _processorOutputLiveData.value = Pair(it, null) },
+                .subscribe(
+                    { _processorOutputLiveData.value = Pair(it, null) },
                     { _processorOutputLiveData.value = Pair(null, it) })
 
         disposables.add(processOutputDisposable!!)
