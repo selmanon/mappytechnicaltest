@@ -52,6 +52,11 @@ class MainActivity : AppCompatActivity() {
                         .show()
                 }
             }
+
+        })
+
+        fizzBuzzViewModel.isProcessingCompleted.observe(this, Observer {
+            binding.buttonProcess.isEnabled = it
         })
     }
 
@@ -74,6 +79,7 @@ class MainActivity : AppCompatActivity() {
             )
 
             binding.textViewResult.text = getString(R.string.processing_label)
+            binding.buttonProcess.isEnabled = false
 
             hideKeyboard()
         }

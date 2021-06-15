@@ -30,6 +30,12 @@ class FizzBuzzViewModel @Inject constructor(
     val processorOutputLiveData: LiveData<Pair<String?, Throwable?>>
         get() = _processorOutputLiveData
 
+    private var _isProcessingCompleted: MutableLiveData<Boolean> =
+        MutableLiveData(false)
+    val isProcessingCompleted : LiveData<Boolean>
+        get() = _isProcessingCompleted
+
+
     fun process(integerOne: Int, integerTwo: Int, limit: Int, stringOne: String, stingTwo: String) {
         val integerInput = IntegersInput(integerOne, integerTwo, limit)
         val stringInput = StringInput(stringOne, stingTwo)
@@ -42,6 +48,7 @@ class FizzBuzzViewModel @Inject constructor(
                 .observeOn(Schedulers.io())
                 .doOnComplete {
                     requestRepository.updateCompleted(request).subscribe()
+                    _isProcessingCompleted.postValue(true)
                     Log.e("TAG", "completed")
                 }
                 .observeOn(AndroidSchedulers.mainThread())
