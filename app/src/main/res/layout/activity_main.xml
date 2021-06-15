@@ -80,8 +80,8 @@
             android:id="@+id/buttonProcess"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="52dp"
-            android:layout_marginLeft="52dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
             android:layout_marginTop="32dp"
             android:text="@string/process_hint"
             app:layout_constraintStart_toStartOf="parent"
@@ -91,28 +91,25 @@
             android:id="@+id/buttonCancelProcessing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
             android:text="@string/cancel_process_hint"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.203"
-            app:layout_constraintStart_toEndOf="@+id/buttonProcess"
-            app:layout_constraintTop_toBottomOf="@+id/editTextStringTwo" />
+            app:layout_constraintBottom_toBottomOf="@+id/buttonProcess"
+            app:layout_constraintEnd_toStartOf="@+id/buttonStatistics"
+            app:layout_constraintStart_toEndOf="@+id/buttonProcess" />
 
         <Button
             android:id="@+id/buttonStatistics"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
             android:text="@string/stats_label"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.835"
-            app:layout_constraintStart_toEndOf="@+id/buttonProcess"
-            app:layout_constraintTop_toBottomOf="@+id/editTextStringTwo" />
+            app:layout_constraintBottom_toBottomOf="@+id/buttonCancelProcessing"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textViewResult"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="52dp"
             android:hint="@string/result_hint"
             app:layout_constraintEnd_toEndOf="parent"

@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.PrecomputedTextCompat
+import androidx.core.widget.TextViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.jakewharton.rxbinding2.widget.RxTextView
@@ -42,14 +44,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun observe() {
         fizzBuzzViewModel.processorOutputLiveData.observe(this, Observer { pairResult ->
+
             if (pairResult.first != null) {
-                binding.textViewResult.setText(pairResult.first.toString())
+                binding.textViewResult.setTextFuture(
+                    PrecomputedTextCompat.getTextFuture(
+                        pairResult.first.toString(),
+                        TextViewCompat.getTextMetricsParams(binding.textViewResult),
+                        null
+                    )
+                )
             }
 
             if (pairResult.second != null) {
                 if (pairResult.second is InvalidInputException) {
                     binding.buttonProcess.isEnabled = true
-                    binding.textViewResult.text = resources.getText(R.string.result_hint)
+                    binding.textViewResult.text = resources.getText(R.string.result_hint).toString()
                     Toast.makeText(
                         this,
                         String.format(getString(R.string.invalid_inputs), pairResult.second),
@@ -61,7 +70,8 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-        fizzBuzzViewModel.isProcessingCompleted.observe(this, Observer {
+        fizzBuzzViewModel.isProcessingCompleted.observe(this, Observer
+        {
             binding.buttonProcess.isEnabled = it
         })
     }
@@ -69,8 +79,6 @@ class MainActivity : AppCompatActivity() {
     private fun setupUi() {
         binding.buttonProcess.setOnClickListener {
             try {
-
-
                 fizzBuzzViewModel.insertRequest(
                     binding.editTextTextIntegerOne.text.toString().toInt(),
                     binding.editTextTextIntegerTwo.text.toString().toInt(),
@@ -87,7 +95,7 @@ class MainActivity : AppCompatActivity() {
                     binding.editTextStringTwo.text.toString()
                 )
 
-                binding.textViewResult.text = getString(R.string.processing_label)
+                binding.textViewResult.setText(getString(R.string.processing_label))
                 binding.buttonProcess.isEnabled = false
 
             } catch (e: Exception) {
@@ -99,14 +107,13 @@ class MainActivity : AppCompatActivity() {
                     .show()
             }
 
-
-
             hideKeyboard()
         }
 
         binding.buttonCancelProcessing.setOnClickListener {
             fizzBuzzViewModel.cancelProcessing()
-            binding.textViewResult.text = getString(R.string.result_hint)
+            binding.textViewResult.setText(getString(R.string.result_hint))
+            binding.buttonProcess.isEnabled = true
         }
 
         binding.buttonStatistics.setOnClickListener {
@@ -141,10 +148,18 @@ class MainActivity : AppCompatActivity() {
             editTextStringTwoStream,
             Function5 { t1: CharSequence, t2: CharSequence, t3: CharSequence, t4: CharSequence, t5: CharSequence ->
                 binding.buttonProcess.isEnabled =
-                    t1.isNotEmpty() && t2.isNotEmpty() && t3.isNotEmpty() && t4.isNotEmpty() && t5.isNotEmpty()
+                    isInputsNotEmpty(t1, t2, t3, t4, t5)
             }
         ).subscribe()
     }
+
+    private fun isInputsNotEmpty(
+        t1: CharSequence,
+        t2: CharSequence,
+        t3: CharSequence,
+        t4: CharSequence,
+        t5: CharSequence
+    ) = t1.isNotEmpty() && t2.isNotEmpty() && t3.isNotEmpty() && t4.isNotEmpty() && t5.isNotEmpty()
 
     private fun hideKeyboard() {
         val inputManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

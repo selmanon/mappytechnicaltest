@@ -6,12 +6,12 @@
     <string name="process_hint">Process</string>
     <string name="cancel_process_hint">Cancel</string>
     <string name="the_most_frequent_request_statistics_label">The most frequent request</string>
-    <string name="completed_request_label">Completed request : %s</string>
-    <string name="number_of_hits_label">Number of hits : %s</string>
-    <string name="integer_one_label">Integer One : %s</string>
-    <string name="integer_two_label">Integer Two : %s</string>
-    <string name="limit_label">Limit : %s</string>
-    <string name="string_one_label">String One : %s</string>
-    <string name="string_two_label">String Two : %s</string>
+    <string name="completed_request_label">Completed request: %s</string>
+    <string name="number_of_hits_label">Number of hits: %s</string>
+    <string name="integer_one_label">Integer One: %s</string>
+    <string name="integer_two_label">Integer Two: %s</string>
+    <string name="limit_label">Limit: %s</string>
+    <string name="string_one_label">String One: %s</string>
+    <string name="string_two_label">String Two: %s</string>
     <string name="stats_label">Stats</string>
 </resources>

@@ -31,7 +31,6 @@ class FizzBuzzViewModel @Inject constructor(
 
     private var _processorOutputLiveData: MutableLiveData<Pair<String?, Throwable?>> =
         MutableLiveData()
-
     val processorOutputLiveData: LiveData<Pair<String?, Throwable?>>
         get() = _processorOutputLiveData
 
@@ -56,6 +55,7 @@ class FizzBuzzViewModel @Inject constructor(
                     _isProcessingCompleted.postValue(true)
                     Log.i(TAG, "completed")
                 }
+                .lastElement()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { _processorOutputLiveData.value = Pair(it, null) },
