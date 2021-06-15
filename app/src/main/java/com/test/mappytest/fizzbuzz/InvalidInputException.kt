@@ -1,3 +1,3 @@
 package com.test.mappytest.fizzbuzz
 
-class InvalidInputException : Throwable()
+class InvalidInputException(override val message: String) : Throwable()

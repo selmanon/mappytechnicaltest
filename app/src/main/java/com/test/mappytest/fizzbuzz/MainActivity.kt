@@ -43,14 +43,19 @@ class MainActivity : AppCompatActivity() {
     private fun observe() {
         fizzBuzzViewModel.processorOutputLiveData.observe(this, Observer { pairResult ->
             if (pairResult.first != null) {
-                binding.textViewResult.text = pairResult.first.toString()
+                binding.textViewResult.setText(pairResult.first.toString())
             }
 
             if (pairResult.second != null) {
                 if (pairResult.second is InvalidInputException) {
                     binding.buttonProcess.isEnabled = true
                     binding.textViewResult.text = resources.getText(R.string.result_hint)
-                    Toast.makeText(this, getString(R.string.invalid_inputs), Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this,
+                        String.format(getString(R.string.invalid_inputs), pairResult.second),
+                        Toast.LENGTH_LONG
+                    )
+                        .show()
                 }
             }
 
@@ -63,24 +68,38 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupUi() {
         binding.buttonProcess.setOnClickListener {
-            fizzBuzzViewModel.insertRequest(
-                binding.editTextTextIntegerOne.text.toString().toInt(),
-                binding.editTextTextIntegerTwo.text.toString().toInt(),
-                binding.editTextTextRangeLimit.text.toString().toInt(),
-                binding.editTextStringOne.text.toString(),
-                binding.editTextStringTwo.text.toString()
-            )
+            try {
 
-            fizzBuzzViewModel.process(
-                binding.editTextTextIntegerOne.text.toString().toInt(),
-                binding.editTextTextIntegerTwo.text.toString().toInt(),
-                binding.editTextTextRangeLimit.text.toString().toInt(),
-                binding.editTextStringOne.text.toString(),
-                binding.editTextStringTwo.text.toString()
-            )
 
-            binding.textViewResult.text = getString(R.string.processing_label)
-            binding.buttonProcess.isEnabled = false
+                fizzBuzzViewModel.insertRequest(
+                    binding.editTextTextIntegerOne.text.toString().toInt(),
+                    binding.editTextTextIntegerTwo.text.toString().toInt(),
+                    binding.editTextTextRangeLimit.text.toString().toInt(),
+                    binding.editTextStringOne.text.toString(),
+                    binding.editTextStringTwo.text.toString()
+                )
+
+                fizzBuzzViewModel.process(
+                    binding.editTextTextIntegerOne.text.toString().toInt(),
+                    binding.editTextTextIntegerTwo.text.toString().toInt(),
+                    binding.editTextTextRangeLimit.text.toString().toInt(),
+                    binding.editTextStringOne.text.toString(),
+                    binding.editTextStringTwo.text.toString()
+                )
+
+                binding.textViewResult.text = getString(R.string.processing_label)
+                binding.buttonProcess.isEnabled = false
+
+            } catch (e: Exception) {
+                Toast.makeText(
+                    this,
+                    String.format(getString(R.string.invalid_inputs), e.message),
+                    Toast.LENGTH_LONG
+                )
+                    .show()
+            }
+
+
 
             hideKeyboard()
         }

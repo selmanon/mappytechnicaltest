@@ -10,15 +10,13 @@ class FizzBuzzProcessor @Inject constructor() {
 
     fun processOutput(integerInput: IntegersInput, stringsInput: StringsInput): Observable<String> {
         if (integerInput.integerOne > integerInput.limit || integerInput.integerTwo > integerInput.limit) {
-            return Observable.error(InvalidInputException())
+            return Observable.error(InvalidInputException("input One or input Two are greater then limit"))
         } else {
-
             val output: StringBuilder = StringBuilder()
             val stingInput = stringsInput.stringOne + stringsInput.stringTwo
 
             return Observable
                 .range(1, integerInput.limit)
-                .take(10000)
                 .concatMap { element ->
                     if (element.rem(integerInput.integerOne) == 0 && element.rem(integerInput.integerTwo) == 0) {
                         output.append(stingInput)
