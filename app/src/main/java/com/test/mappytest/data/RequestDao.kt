@@ -60,7 +60,7 @@ interface RequestDao {
     }
 
 
-    @Query("SELECT * FROM RequestEntity ORDER BY completed,hits DESC LIMIT 1")
+    @Query("SELECT * FROM RequestEntity ORDER BY hits DESC LIMIT 1")
     fun getMostFrequentRequest(): Single<RequestEntity>
 
 }
