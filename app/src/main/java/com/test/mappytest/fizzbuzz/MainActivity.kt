@@ -48,8 +48,9 @@ class MainActivity : AppCompatActivity() {
 
             if (pairResult.second != null) {
                 if (pairResult.second is InvalidInputException) {
-                    Toast.makeText(this, getString(R.string.invalid_inputs), Toast.LENGTH_SHORT)
-                        .show()
+                    binding.buttonProcess.isEnabled = true
+                    binding.textViewResult.text = resources.getText(R.string.result_hint)
+                    Toast.makeText(this, getString(R.string.invalid_inputs), Toast.LENGTH_LONG).show()
                 }
             }
 

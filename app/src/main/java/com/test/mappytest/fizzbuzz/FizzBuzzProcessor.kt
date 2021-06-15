@@ -14,12 +14,13 @@ class FizzBuzzProcessor @Inject constructor() {
         } else {
 
             val output: StringBuilder = StringBuilder()
+            val stingInput = stringsInput.stringOne + stringsInput.stringTwo
 
             return Observable
                 .range(1, integerInput.limit)
                 .concatMap { element ->
                     if (element.rem(integerInput.integerOne) == 0 && element.rem(integerInput.integerTwo) == 0) {
-                        output.append(stringsInput.stringOne + stringsInput.stringTwo)
+                        output.append(stingInput)
                     } else if (element.rem(integerInput.integerOne) == 0) {
                         output.append(stringsInput.stringOne)
                     } else if (element.rem(integerInput.integerTwo) == 0) {
