@@ -87,6 +87,7 @@ class MainActivity : AppCompatActivity() {
         binding.buttonCancelProcessing.setOnClickListener {
             fizzBuzzViewModel.cancelProcessing()
             binding.textViewResult.text = getString(R.string.result_hint)
+            binding.buttonProcess.isEnabled = true
         }
 
         binding.buttonStatistics.setOnClickListener {
