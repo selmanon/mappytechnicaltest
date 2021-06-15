@@ -5,7 +5,8 @@ import com.test.mappytest.data.FizzBuzzDatabase
 import com.test.mappytest.data.RequestDao
 import com.test.mappytest.data.entitites.RequestEntity
 import com.test.mappytest.model.Request
-import io.reactivex.Observable
+import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class RequestRepository @Inject constructor(application: Application) {
@@ -16,7 +17,7 @@ class RequestRepository @Inject constructor(application: Application) {
         requestDao = db.requestDao()
     }
 
-    fun insertOrUpdateHits(request: Request) =
+    fun insertOrUpdateHits(request: Request) = Single.fromCallable {
         requestDao.insertOrUpdateHits(
             RequestEntity(
                 integerOne = request.integersInput.integerOne,
@@ -24,24 +25,22 @@ class RequestRepository @Inject constructor(application: Application) {
                 limit = request.integersInput.limit,
                 stringOne = request.stringInput.stringOne,
                 stringTwo = request.stringInput.stringTwo,
-                completed = 1,
+                completed = 0,
                 hits = 1
             )
         )
+    }.subscribeOn(Schedulers.io())
 
 
-
-
-    fun updateCompleted(request: Request) {
+    fun updateCompleted(request: Request) =
         requestDao.updateCompleted(
             integerOne = request.integersInput.integerOne,
             integerTwo = request.integersInput.integerTwo,
             limit = request.integersInput.limit,
             stringOne = request.stringInput.stringOne,
             stringTwo = request.stringInput.stringTwo
-
         )
-    }
+
 
     fun mostFrequentRequest() = requestDao.getMostFrequentRequest()
 

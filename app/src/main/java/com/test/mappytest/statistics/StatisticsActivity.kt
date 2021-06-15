@@ -66,11 +66,8 @@ class StatisticsActivity : AppCompatActivity() {
                 ), requestEntity.hits.toString()
             )
 
-            binding.progressBarCompletedRequests.max = requestEntity.hits + requestEntity.completed
+            binding.progressBarCompletedRequests.max = requestEntity.hits
             binding.progressBarCompletedRequests.progress = requestEntity.completed
-
-            binding.progressBarHits.max = requestEntity.hits + requestEntity.completed
-            binding.progressBarHits.progress = requestEntity.hits
         })
     }
 }

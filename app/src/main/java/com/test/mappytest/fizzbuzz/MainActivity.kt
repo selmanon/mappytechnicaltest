@@ -57,6 +57,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupUi() {
         binding.buttonProcess.setOnClickListener {
+            fizzBuzzViewModel.insertRequest(
+                binding.editTextTextIntegerOne.text.toString().toInt(),
+                binding.editTextTextIntegerTwo.text.toString().toInt(),
+                binding.editTextTextRangeLimit.text.toString().toInt(),
+                binding.editTextStringOne.text.toString(),
+                binding.editTextStringTwo.text.toString()
+            )
+
             fizzBuzzViewModel.process(
                 binding.editTextTextIntegerOne.text.toString().toInt(),
                 binding.editTextTextIntegerTwo.text.toString().toInt(),

@@ -1,5 +1,6 @@
 package com.test.mappytest.fizzbuzz
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -33,23 +34,42 @@ class FizzBuzzViewModel @Inject constructor(
         val integerInput = IntegersInput(integerOne, integerTwo, limit)
         val stringInput = StringInput(stringOne, stingTwo)
         val request = Request(integerInput, stringInput)
-        var processedResult = ""
 
         processOutputDisposable =
             fizzBuzzProcessor
                 .processOutput(integerInput, stringInput)
-                .doOnComplete { requestRepository.updateCompleted(request) }
-                .lastElement()
                 .subscribeOn(Schedulers.computation())
-                .flatMapSingle {
-                    processedResult = it
-                    requestRepository.insertOrUpdateHits(request)
+                .observeOn(Schedulers.io())
+                .doOnComplete {
+                    requestRepository.updateCompleted(request).subscribe()
+                    Log.e("TAG", "completed")
                 }
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ _processorOutputLiveData.value = Pair(processedResult, null) },
+                .subscribe({ _processorOutputLiveData.value = Pair(it, null) },
                     { _processorOutputLiveData.value = Pair(null, it) })
 
         disposables.add(processOutputDisposable!!)
+    }
+
+    fun insertRequest(
+        integerOne: Int,
+        integerTwo: Int,
+        limit: Int,
+        stringOne: String,
+        stingTwo: String
+    ) {
+        val integerInput = IntegersInput(integerOne, integerTwo, limit)
+        val stringInput = StringInput(stringOne, stingTwo)
+        val insertDisposable =
+            requestRepository.insertOrUpdateHits(Request(integerInput, stringInput))
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    Log.e("TAG", " insertRequest with success $it")
+                }, {
+                    Log.e("TAG", "error insertRequest" + it.message)
+                })
+
+        disposables.add(insertDisposable)
     }
 
     fun cancelProcessing() {
