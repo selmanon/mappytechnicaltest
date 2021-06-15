@@ -1,6 +1,9 @@
 package com.test.mappytest.data
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.test.mappytest.data.entitites.RequestEntity
 import io.reactivex.Single
 
@@ -8,7 +11,7 @@ import io.reactivex.Single
 interface RequestDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(requestEntity: RequestEntity)
+    fun insert(requestEntity: RequestEntity): Single<Long>
 
     @Query("SELECT * from RequestEntity WHERE integerOne LIKE :integerOne AND integerTwo LIKE :integerTwo AND `limit` LIKE :limit AND stringOne LIKE :stringOne AND stringTwo LIKE :stringTwo")
     fun getRequestByPrimaryKey(
@@ -26,7 +29,7 @@ interface RequestDao {
         limit: Int,
         stringOne: String,
         stringTwo: String
-    )
+    ): Single<Int>
 
     @Query("UPDATE RequestEntity SET hits = hits + 1 WHERE integerOne LIKE :integerOne AND integerTwo LIKE :integerTwo AND `limit` LIKE :limit AND stringOne LIKE :stringOne AND stringTwo LIKE :stringTwo")
     fun updateHits(
@@ -35,9 +38,10 @@ interface RequestDao {
         limit: Int,
         stringOne: String,
         stringTwo: String
-    )
+    ): Single<Int>
 
-    fun insertOrUpdateCompleted(requestEntity: RequestEntity) {
+
+    fun insertOrUpdateHits(requestEntity: RequestEntity): Single<Long> {
         val requestFromDatabase = getRequestByPrimaryKey(
             requestEntity.integerOne,
             requestEntity.integerTwo,
@@ -46,36 +50,15 @@ interface RequestDao {
             requestEntity.stringTwo
         )
         if (requestFromDatabase == null) {
-            insert(requestEntity)
+            return insert(requestEntity)
         } else {
-            updateCompleted(
+            return updateHits(
                 requestEntity.integerOne,
                 requestEntity.integerTwo,
                 requestEntity.limit,
                 requestEntity.stringOne,
                 requestEntity.stringTwo
-            )
-        }
-    }
-
-    fun insertOrUpdateHits(requestEntity: RequestEntity) {
-        val requestFromDatabase = getRequestByPrimaryKey(
-            requestEntity.integerOne,
-            requestEntity.integerTwo,
-            requestEntity.limit,
-            requestEntity.stringOne,
-            requestEntity.stringTwo
-        )
-        if (requestFromDatabase == null) {
-            insert(requestEntity)
-        } else {
-            updateHits(
-                requestEntity.integerOne,
-                requestEntity.integerTwo,
-                requestEntity.limit,
-                requestEntity.stringOne,
-                requestEntity.stringTwo
-            )
+            ).map { 1L }
         }
     }
 

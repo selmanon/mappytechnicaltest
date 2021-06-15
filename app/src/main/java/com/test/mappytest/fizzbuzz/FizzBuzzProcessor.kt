@@ -1,6 +1,6 @@
 package com.test.mappytest.fizzbuzz
 
-import com.test.mappytest.model.IntegerInput
+import com.test.mappytest.model.IntegersInput
 import com.test.mappytest.model.StringInput
 import io.reactivex.Observable
 import javax.inject.Inject
@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class FizzBuzzProcessor @Inject constructor() {
 
-    fun processOutput(integerInput: IntegerInput, stringInput: StringInput): Observable<String> {
+    fun processOutput(integerInput: IntegersInput, stringInput: StringInput): Observable<String> {
         if (integerInput.integerOne > integerInput.limit || integerInput.integerTwo > integerInput.limit) {
             return Observable.error(InvalidInputException())
         } else {

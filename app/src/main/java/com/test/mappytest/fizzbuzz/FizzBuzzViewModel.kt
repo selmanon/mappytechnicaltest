@@ -3,7 +3,7 @@ package com.test.mappytest.fizzbuzz
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.test.mappytest.model.IntegerInput
+import com.test.mappytest.model.IntegersInput
 import com.test.mappytest.model.Request
 import com.test.mappytest.model.StringInput
 import com.test.mappytest.statistics.RequestRepository
@@ -30,18 +30,24 @@ class FizzBuzzViewModel @Inject constructor(
         get() = _processorOutputLiveData
 
     fun process(integerOne: Int, integerTwo: Int, limit: Int, stringOne: String, stingTwo: String) {
-        val integerInput = IntegerInput(integerOne, integerTwo, limit)
+        val integerInput = IntegersInput(integerOne, integerTwo, limit)
         val stringInput = StringInput(stringOne, stingTwo)
         val request = Request(integerInput, stringInput)
+        var processedResult = ""
 
-        processOutputDisposable = fizzBuzzProcessor.processOutput(integerInput, stringInput)
-            .subscribeOn(Schedulers.computation())
-            .observeOn(Schedulers.io())
-            //.doOnSubscribe { requestRepository.insertOrUpdateHits(request) }
-            .doOnComplete { requestRepository.insertOrUpdateCompleted(request) }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ _processorOutputLiveData.value = Pair(it, null) },
-                { _processorOutputLiveData.value = Pair(null, it) })
+        processOutputDisposable =
+            fizzBuzzProcessor
+                .processOutput(integerInput, stringInput)
+                .doOnComplete { requestRepository.updateCompleted(request) }
+                .lastElement()
+                .subscribeOn(Schedulers.computation())
+                .flatMapSingle {
+                    processedResult = it
+                    requestRepository.insertOrUpdateHits(request)
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ _processorOutputLiveData.value = Pair(processedResult, null) },
+                    { _processorOutputLiveData.value = Pair(null, it) })
 
         disposables.add(processOutputDisposable!!)
     }

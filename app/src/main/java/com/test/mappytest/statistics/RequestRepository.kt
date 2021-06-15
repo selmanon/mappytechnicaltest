@@ -5,6 +5,7 @@ import com.test.mappytest.data.FizzBuzzDatabase
 import com.test.mappytest.data.RequestDao
 import com.test.mappytest.data.entitites.RequestEntity
 import com.test.mappytest.model.Request
+import io.reactivex.Observable
 import javax.inject.Inject
 
 class RequestRepository @Inject constructor(application: Application) {
@@ -15,31 +16,30 @@ class RequestRepository @Inject constructor(application: Application) {
         requestDao = db.requestDao()
     }
 
-    fun insertOrUpdateCompleted(request: Request) {
-        requestDao.insertOrUpdateCompleted(
+    fun insertOrUpdateHits(request: Request) =
+        requestDao.insertOrUpdateHits(
             RequestEntity(
-                integerOne = request.integerInput.integerOne,
-                integerTwo = request.integerInput.integerTwo,
-                limit = request.integerInput.limit,
+                integerOne = request.integersInput.integerOne,
+                integerTwo = request.integersInput.integerTwo,
+                limit = request.integersInput.limit,
                 stringOne = request.stringInput.stringOne,
                 stringTwo = request.stringInput.stringTwo,
                 completed = 1,
                 hits = 1
             )
         )
-    }
 
-    fun insertOrUpdateHits(request: Request) {
-        requestDao.insertOrUpdateHits(
-            RequestEntity(
-                integerOne = request.integerInput.integerOne,
-                integerTwo = request.integerInput.integerTwo,
-                limit = request.integerInput.limit,
-                stringOne = request.stringInput.stringOne,
-                stringTwo = request.stringInput.stringTwo,
-                completed = 1,
-                hits = 1
-            )
+
+
+
+    fun updateCompleted(request: Request) {
+        requestDao.updateCompleted(
+            integerOne = request.integersInput.integerOne,
+            integerTwo = request.integersInput.integerTwo,
+            limit = request.integersInput.limit,
+            stringOne = request.stringInput.stringOne,
+            stringTwo = request.stringInput.stringTwo
+
         )
     }
 
