@@ -14,4 +14,9 @@
     <string name="string_one_label">String One: %s</string>
     <string name="string_two_label">String Two: %s</string>
     <string name="stats_label">Stats</string>
+    <string name="label_integer_one">3</string>
+    <string name="integer_two_hnit">5</string>
+    <string name="limit_hint">10000</string>
+    <string name="fizz_hint">fizz</string>
+    <string name="buzz_hint">buzz</string>
 </resources>
