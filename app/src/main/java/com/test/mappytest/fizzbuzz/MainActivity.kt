@@ -6,8 +6,6 @@ import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.text.PrecomputedTextCompat
-import androidx.core.widget.TextViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.jakewharton.rxbinding2.widget.RxTextView
@@ -46,19 +44,17 @@ class MainActivity : AppCompatActivity() {
         fizzBuzzViewModel.processorOutputLiveData.observe(this, Observer { pairResult ->
 
             if (pairResult.first != null) {
-                binding.textViewResult.setTextFuture(
-                    PrecomputedTextCompat.getTextFuture(
-                        pairResult.first.toString(),
-                        TextViewCompat.getTextMetricsParams(binding.textViewResult),
-                        null
-                    )
-                )
+                //binding.textViewResult.text = pairResult.first
+                binding.textViewResult.loadData(pairResult.first.toString(), "text/html", "UTF-8")
             }
 
             if (pairResult.second != null) {
                 if (pairResult.second is InvalidInputException) {
                     binding.buttonProcess.isEnabled = true
-                    binding.textViewResult.text = resources.getText(R.string.result_hint).toString()
+                    //binding.textViewResult.text = resources.getText(R.string.result_hint).toString()
+                    binding.textViewResult.loadData(
+                        resources.getText(R.string.result_hint).toString(), "text/html", "UTF-8"
+                    )
                     Toast.makeText(
                         this,
                         String.format(getString(R.string.invalid_inputs), pairResult.second),
@@ -95,7 +91,10 @@ class MainActivity : AppCompatActivity() {
                     binding.editTextStringTwo.text.toString()
                 )
 
-                binding.textViewResult.setText(getString(R.string.processing_label))
+                //binding.textViewResult.text = getString(R.string.processing_label)
+                binding.textViewResult.loadData(
+                    getString(R.string.processing_label), "text/html", "UTF-8"
+                )
                 binding.buttonProcess.isEnabled = false
 
             } catch (e: Exception) {
@@ -112,7 +111,10 @@ class MainActivity : AppCompatActivity() {
 
         binding.buttonCancelProcessing.setOnClickListener {
             fizzBuzzViewModel.cancelProcessing()
-            binding.textViewResult.setText(getString(R.string.result_hint))
+            //binding.textViewResult.setText(getString(R.string.result_hint))
+            binding.textViewResult.loadData(
+                getString(R.string.result_hint), "text/html", "UTF-8"
+            )
             binding.buttonProcess.isEnabled = true
         }
 

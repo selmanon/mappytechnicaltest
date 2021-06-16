@@ -1,119 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".fizzbuzz.MainActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+
+    <EditText
+        android:id="@+id/editTextTextIntegerOne"
+        android:layout_width="100dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="IntegerOne"
+        android:inputType="numberSigned"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextTextIntegerTwo"
+        android:layout_width="100dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:ems="10"
+        android:hint="IntegerTwo"
+        android:inputType="numberSigned"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextTextIntegerOne"
+        app:layout_constraintStart_toEndOf="@+id/editTextTextIntegerOne"
+        app:layout_constraintTop_toTopOf="@+id/editTextTextIntegerOne"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/editTextTextRangeLimit"
+        android:layout_width="100dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Limit"
+        android:inputType="numberSigned"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/editTextTextIntegerTwo"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextStringOne"
+        android:layout_width="100dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="text One"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextIntegerOne" />
+
+    <EditText
+        android:id="@+id/editTextStringTwo"
+        android:layout_width="100dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="text Two"
+        android:inputType="text"
+        app:layout_constraintStart_toEndOf="@+id/editTextStringOne"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextIntegerTwo" />
+
+    <Button
+        android:id="@+id/buttonProcess"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:context=".fizzbuzz.MainActivity">
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/process_hint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextStringTwo" />
 
+    <Button
+        android:id="@+id/buttonCancelProcessing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel_process_hint"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonProcess"
+        app:layout_constraintEnd_toStartOf="@+id/buttonStatistics"
+        app:layout_constraintStart_toEndOf="@+id/buttonProcess" />
 
-        <EditText
-            android:id="@+id/editTextTextIntegerOne"
-            android:layout_width="100dp"
-            android:layout_height="44dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:ems="10"
-            android:hint="IntegerOne"
-            android:inputType="numberSigned"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <Button
+        android:id="@+id/buttonStatistics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:text="@string/stats_label"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonCancelProcessing"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <EditText
-            android:id="@+id/editTextTextIntegerTwo"
-            android:layout_width="100dp"
-            android:layout_height="44dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:ems="10"
-            android:hint="IntegerTwo"
-            android:inputType="numberSigned"
-            app:layout_constraintBottom_toBottomOf="@+id/editTextTextIntegerOne"
-            app:layout_constraintStart_toEndOf="@+id/editTextTextIntegerOne"
-            app:layout_constraintTop_toTopOf="@+id/editTextTextIntegerOne"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <EditText
-            android:id="@+id/editTextTextRangeLimit"
-            android:layout_width="100dp"
-            android:layout_height="44dp"
-            android:layout_marginTop="16dp"
-            android:ems="10"
-            android:hint="Limit"
-            android:inputType="numberSigned"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/editTextTextIntegerTwo"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/editTextStringOne"
-            android:layout_width="100dp"
-            android:layout_height="44dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="20dp"
-            android:ems="10"
-            android:hint="text One"
-            android:inputType="text"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextIntegerOne" />
-
-        <EditText
-            android:id="@+id/editTextStringTwo"
-            android:layout_width="100dp"
-            android:layout_height="44dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:ems="10"
-            android:hint="text Two"
-            android:inputType="text"
-            app:layout_constraintStart_toEndOf="@+id/editTextStringOne"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextIntegerTwo" />
-
-        <Button
-            android:id="@+id/buttonProcess"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="32dp"
-            android:text="@string/process_hint"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextStringTwo" />
-
-        <Button
-            android:id="@+id/buttonCancelProcessing"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cancel_process_hint"
-            app:layout_constraintBottom_toBottomOf="@+id/buttonProcess"
-            app:layout_constraintEnd_toStartOf="@+id/buttonStatistics"
-            app:layout_constraintStart_toEndOf="@+id/buttonProcess" />
-
-        <Button
-            android:id="@+id/buttonStatistics"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
-            android:text="@string/stats_label"
-            app:layout_constraintBottom_toBottomOf="@+id/buttonCancelProcessing"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textViewResult"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginTop="52dp"
-            android:hint="@string/result_hint"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonProcess" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+    <WebView
+        android:id="@+id/textViewResult"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="52dp"
+        android:ellipsize="end"
+        android:hint="@string/result_hint"
+        android:maxLength="1500"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonProcess" />
+</androidx.constraintlayout.widget.ConstraintLayout>
