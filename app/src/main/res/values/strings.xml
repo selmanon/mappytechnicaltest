@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">mappytest</string>
+    <string name="app_name">FizzBuzz</string>
     <string name="invalid_inputs">Invalid input : %s</string>
     <string name="processing_label">Processing..</string>
     <string name="result_hint">Result</string>
