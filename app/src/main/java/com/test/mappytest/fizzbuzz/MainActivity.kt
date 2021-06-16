@@ -41,29 +41,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observe() {
-        fizzBuzzViewModel.processorOutputLiveData.observe(this, Observer { pairResult ->
-
-            if (pairResult.first != null) {
-                //binding.textViewResult.text = pairResult.first
-                binding.textViewResult.loadData(pairResult.first.toString(), "text/html", "UTF-8")
+        fizzBuzzViewModel.processorOutputLiveData.observe(this, Observer { processingResult ->
+            if (processingResult != null) {
+                binding.textViewResult.loadData(processingResult, "text/html", "UTF-8")
             }
+        })
 
-            if (pairResult.second != null) {
-                if (pairResult.second is InvalidInputException) {
-                    binding.buttonProcess.isEnabled = true
-                    //binding.textViewResult.text = resources.getText(R.string.result_hint).toString()
-                    binding.textViewResult.loadData(
-                        resources.getText(R.string.result_hint).toString(), "text/html", "UTF-8"
-                    )
-                    Toast.makeText(
-                        this,
-                        String.format(getString(R.string.invalid_inputs), pairResult.second),
-                        Toast.LENGTH_LONG
-                    )
-                        .show()
-                }
+        fizzBuzzViewModel.processingError.observe(this, Observer { isError ->
+
+            if (isError) {
+                binding.buttonProcess.isEnabled = true
+                binding.textViewResult.loadData(
+                    resources.getText(R.string.result_hint).toString(), "text/html", "UTF-8"
+                )
+                Toast.makeText(
+                    this,
+                    getString(R.string.invalid_inputs),
+                    Toast.LENGTH_LONG
+                )
+                    .show()
             }
-
         })
 
         fizzBuzzViewModel.isProcessingCompleted.observe(this, Observer

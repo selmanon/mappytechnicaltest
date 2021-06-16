@@ -29,10 +29,15 @@ class FizzBuzzViewModel @Inject constructor(
     private var disposables: CompositeDisposable = CompositeDisposable()
     private var processOutputDisposable: Disposable? = null
 
-    private var _processorOutputLiveData: MutableLiveData<Pair<String?, Throwable?>> =
+    private var _processorOutputLiveData: MutableLiveData<String> =
         MutableLiveData()
-    val processorOutputLiveData: LiveData<Pair<String?, Throwable?>>
+    val processorOutputLiveData: LiveData<String>
         get() = _processorOutputLiveData
+
+    private var _processingError = MutableLiveData<Boolean>(false)
+    val processingError: LiveData<Boolean>
+        get() = _processingError
+
 
     private var _isProcessingCompleted: MutableLiveData<Boolean> =
         MutableLiveData(false)
@@ -57,8 +62,8 @@ class FizzBuzzViewModel @Inject constructor(
                 .lastElement()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                    { _processorOutputLiveData.value = Pair(it, null) },
-                    { _processorOutputLiveData.value = Pair(null, it) })
+                    { _processorOutputLiveData.value = it },
+                    { _processingError.value = true })
 
         disposables.add(processOutputDisposable!!)
     }

@@ -40,7 +40,6 @@ class FizzBuzzViewModelTest {
     var requestRepository: RequestRepository = mockkClass(RequestRepository::class)
 
 
-
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
@@ -80,10 +79,10 @@ class FizzBuzzViewModelTest {
             Single.just(1)
         }
 
-        val processedResult = MutableLiveData<Pair<String?, Throwable?>>()
-        processedResult.value = Pair("Fi,FiBu,Fi,", null)
+        val processedResult = MutableLiveData<String>()
+        processedResult.value = "Fi,FiBu,Fi,"
 
-        val observer = Observer<Pair<String?, Throwable?>> {}
+        val observer = Observer<String> {}
         cut.processorOutputLiveData.observeForever(observer)
 
         try {
@@ -101,20 +100,20 @@ class FizzBuzzViewModelTest {
     @Test
     fun `processing result fail`() {
         // Arrange
-        val processedResult = MutableLiveData<Pair<String?, Throwable?>>()
-        processedResult.value = Pair(null, InvalidInputException("input One or input Two are greater then limit"))
+        val errorState = MutableLiveData<Boolean>()
+        errorState.value = true
 
-        val observer = Observer<Pair<String?, Throwable?>> {}
-        cut.processorOutputLiveData.observeForever(observer)
+        val observer = Observer<Boolean> {}
+        cut.processingError.observeForever(observer)
 
         try {
             // Act
             cut.process(2, 3, 1, "Fi", "Bu")
 
             // Assert
-            Assert.assertEquals(processedResult.value?.second?.message, cut.processorOutputLiveData.value?.second?.message)
+            Assert.assertEquals(errorState.value, cut.processingError.value)
         } finally {
-            cut.processorOutputLiveData.removeObserver(observer)
+            cut.processingError.removeObserver(observer)
         }
     }
 
