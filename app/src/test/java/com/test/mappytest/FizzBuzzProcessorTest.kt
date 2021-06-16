@@ -27,7 +27,7 @@ class FizzBuzzProcessorTest : TestCase() {
         val output = fizzBuzzProcessor.processOutput(integerInput, stringInput)
 
         // assert
-      output.lastOrError().test().assertResult(expectedOutput.toString()).assertComplete()
+        output.lastOrError().test().assertResult(expectedOutput.toString()).assertComplete()
 
     }
 
