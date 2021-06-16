@@ -112,7 +112,7 @@ class FizzBuzzViewModelTest {
             cut.process(2, 3, 1, "Fi", "Bu")
 
             // Assert
-            Assert.assertEquals(processedResult.value, cut.processorOutputLiveData.value)
+            Assert.assertEquals(processedResult.value?.second?.message, cut.processorOutputLiveData.value?.second?.message)
         } finally {
             cut.processorOutputLiveData.removeObserver(observer)
         }
