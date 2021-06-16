@@ -53,7 +53,6 @@ class FizzBuzzViewModel @Inject constructor(
                 .doOnComplete {
                     requestRepository.updateCompleted(request).subscribe()
                     _isProcessingCompleted.postValue(true)
-                    Log.i(TAG, "completed")
                 }
                 .lastElement()
                 .observeOn(AndroidSchedulers.mainThread())

@@ -1,6 +1,5 @@
 package com.test.mappytest.fizzbuzz
 
-import android.util.Log
 import com.test.mappytest.model.IntegersInput
 import com.test.mappytest.model.StringsInput
 import io.reactivex.Observable
@@ -33,7 +32,6 @@ class FizzBuzzProcessor @Inject constructor() {
 
                     return@concatMap Observable.just(output.toString())
                 }
-
         }
     }
 

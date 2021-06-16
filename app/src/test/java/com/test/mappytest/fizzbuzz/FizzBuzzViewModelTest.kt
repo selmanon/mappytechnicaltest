@@ -14,6 +14,7 @@ import io.mockk.spyk
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.plugins.RxAndroidPlugins
+import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
 import org.junit.Assert
 import org.junit.Before
@@ -33,54 +34,88 @@ class FizzBuzzViewModelTest {
     lateinit var cut: FizzBuzzViewModel
 
     @Mock
-    var defaultFizzBuzzProcessor: FizzBuzzProcessor = mockkClass(FizzBuzzProcessor::class)
+    var defaultFizzBuzzProcessor: FizzBuzzProcessor = spyk()
 
     @Mock
     var requestRepository: RequestRepository = mockkClass(RequestRepository::class)
 
-    @Mock
-    lateinit var processResult: MutableLiveData<Pair<String, Throwable>>
 
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        defaultFizzBuzzProcessor = spyk()
 
         RxAndroidPlugins.setInitMainThreadSchedulerHandler { Schedulers.trampoline() }
+
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler { Schedulers.trampoline() }
+        RxJavaPlugins.setIoSchedulerHandler { Schedulers.trampoline() }
+        RxJavaPlugins.setComputationSchedulerHandler { Schedulers.trampoline() }
 
         cut = FizzBuzzViewModel(defaultFizzBuzzProcessor, requestRepository)
     }
 
     @Test
-    fun `get processing result Success`() {
+    fun `processing result Success`() {
+
+        val defaultFizzBuzzProcessor = spyk<FizzBuzzProcessor>()
+
         // Arrange
         every {
             defaultFizzBuzzProcessor.processOutput(
                 IntegersInput(1, 2, 3),
                 StringsInput("Fi", "Bu")
             )
+        } answers {
+            Observable.just("1", "2")
         }
-            (Observable.just("1", "2"))
 
-
+        every {
+            requestRepository.updateCompleted(
+                Request(
+                    IntegersInput(1, 2, 3),
+                    StringsInput("Fi", "Bu")
+                )
+            )
+        } answers {
+            Single.just(1)
+        }
 
         val processedResult = MutableLiveData<Pair<String?, Throwable?>>()
-        processedResult.value = Pair("1,2", null)
+        processedResult.value = Pair("Fi,FiBu,Fi,", null)
 
         val observer = Observer<Pair<String?, Throwable?>> {}
         cut.processorOutputLiveData.observeForever(observer)
 
         try {
             // Act
-            cut.process(2, 5, 7, "D", "F")
+            cut.process(1, 2, 3, "Fi", "Bu")
 
             // Assert
             Assert.assertEquals(processedResult.value, cut.processorOutputLiveData.value)
         } finally {
             cut.processorOutputLiveData.removeObserver(observer)
         }
+    }
 
+
+    @Test
+    fun `processing result fail`() {
+        // Arrange
+        val processedResult = MutableLiveData<Pair<String?, Throwable?>>()
+        processedResult.value = Pair(null, InvalidInputException("input One or input Two are greater then limit"))
+
+        val observer = Observer<Pair<String?, Throwable?>> {}
+        cut.processorOutputLiveData.observeForever(observer)
+
+        try {
+            // Act
+            cut.process(2, 3, 1, "Fi", "Bu")
+
+            // Assert
+            Assert.assertEquals(processedResult.value, cut.processorOutputLiveData.value)
+        } finally {
+            cut.processorOutputLiveData.removeObserver(observer)
+        }
     }
 
 
